@@ -22,6 +22,8 @@ public class PlayerInput : MonoBehaviour
     // 1. pressing signal
     public bool run;
     // 2. trigger once signal
+    public bool jump;
+    private bool lastJump;
     // 3. double trigger
 
     [Header("===== Others =====")]
@@ -53,7 +55,14 @@ public class PlayerInput : MonoBehaviour
         Dmag = Mathf.Sqrt((Dup2 * Dup2) + (Dright2 * Dright2));
         Dvec = Dright2 * transform.right + Dup2 * transform.forward;
 
+        // pressing signal
         run = Input.GetKey(keyA);
+
+        // trigger once signal
+        bool newJump = Input.GetKey(keyB);
+        if (newJump != lastJump && newJump) jump = true;
+        else jump = false;
+        lastJump = jump;
     }
 
     private Vector2 SquareToCircle(Vector2 input)
