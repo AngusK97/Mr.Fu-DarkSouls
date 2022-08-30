@@ -58,11 +58,12 @@ public class PlayerInput : MonoBehaviour
         // pressing signal
         run = Input.GetKey(keyA);
 
-        // trigger once signal
+        // trigger once signal（等价于 Input.GetKeyDown()）
+        // jump = Input.GetKeyDown(keyB);
         bool newJump = Input.GetKey(keyB);
         if (newJump != lastJump && newJump) jump = true;
         else jump = false;
-        lastJump = jump;
+        lastJump = newJump;
     }
 
     private Vector2 SquareToCircle(Vector2 input)
