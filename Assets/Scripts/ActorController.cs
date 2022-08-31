@@ -25,6 +25,9 @@ public class ActorController : MonoBehaviour
         float targetRunMulti = Mathf.Lerp(anim.GetFloat("forward"), pi.Dmag * (pi.run ? 2.0f : 1.0f), 0.05f);
         anim.SetFloat("forward", targetRunMulti);
 
+        // 跳跃
+        if (pi.jump) anim.SetTrigger("jump");
+        
         // 角色旋转
         if (pi.Dmag > 0.1f)
             model.transform.forward = Vector3.Slerp(model.transform.forward, pi.Dvec, 0.3f);

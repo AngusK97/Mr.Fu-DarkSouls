@@ -256,7 +256,7 @@ MonoBehaviour:
   keyLeft: a
   keyRight: d
   keyA: left shift
-  keyB: space
+  keyB: j
   keyC: 
   keyD: 
   Dup: 0
