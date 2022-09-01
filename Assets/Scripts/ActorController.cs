@@ -1,3 +1,4 @@
+using UnityEditorInternal;
 using UnityEngine;
 
 public class ActorController : MonoBehaviour
@@ -10,7 +11,8 @@ public class ActorController : MonoBehaviour
     [SerializeField] 
     private Animator anim;
     private Rigidbody rigid;
-    private Vector3 movingVec;
+    private Vector3 planarVec;
+    private bool lockPlanar;
 
     private void Awake()
     {
@@ -33,22 +35,25 @@ public class ActorController : MonoBehaviour
             model.transform.forward = Vector3.Slerp(model.transform.forward, pi.Dvec, 0.3f);
         
         // 角色移动
-        movingVec = model.transform.forward * (pi.Dmag * walkSpeed * (pi.run ? runMultiplier : 1.0f)); 
+        if (!lockPlanar)
+            planarVec = model.transform.forward * (pi.Dmag * walkSpeed * (pi.run ? runMultiplier : 1.0f)); 
     }
 
     private void FixedUpdate()
     {
         // rigid.position += movingVec * Time.fixedDeltaTime;  // 修改 rigid.position 移动角色
-        rigid.velocity = new Vector3(movingVec.x, rigid.velocity.y, movingVec.z);   // 修改 rigid.velocity 移动角色
+        rigid.velocity = new Vector3(planarVec.x, rigid.velocity.y, planarVec.z);   // 修改 rigid.velocity 移动角色
     }
 
     public void OnJumpEnter()
     {
-        Debug.LogError("on jump enter");
+        pi.inputEnable = false;
+        lockPlanar = true;
     }
 
     public void OnJumpExit()
     {
-        Debug.LogError("on jump exit");
+        pi.inputEnable = true;
+        lockPlanar = false;
     }
 }

@@ -11,7 +11,7 @@ public class FSMOnEnter : StateMachineBehaviour
     {
         foreach (var msg in onEnterMessages)
         {
-            animator.gameObject.SendMessageUpwards(msg);
+            animator.gameObject.SendMessageUpwards(msg);  // 性能不好，未来优化
         }   
     }
 

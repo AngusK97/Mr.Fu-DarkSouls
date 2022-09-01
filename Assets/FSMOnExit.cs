@@ -23,7 +23,7 @@ public class FSMOnExit : StateMachineBehaviour
     {
         foreach (var msg in onExitMessages)
         {
-            animator.gameObject.SendMessageUpwards(msg);
+            animator.gameObject.SendMessageUpwards(msg);  // 性能不好，未来优化
         }   
     }
 
