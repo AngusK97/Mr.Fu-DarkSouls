@@ -41,4 +41,14 @@ public class ActorController : MonoBehaviour
         // rigid.position += movingVec * Time.fixedDeltaTime;  // 修改 rigid.position 移动角色
         rigid.velocity = new Vector3(movingVec.x, rigid.velocity.y, movingVec.z);   // 修改 rigid.velocity 移动角色
     }
+
+    public void OnJumpEnter()
+    {
+        Debug.LogError("on jump enter");
+    }
+
+    public void OnJumpExit()
+    {
+        Debug.LogError("on jump exit");
+    }
 }
