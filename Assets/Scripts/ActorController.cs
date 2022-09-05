@@ -7,11 +7,13 @@ public class ActorController : MonoBehaviour
     public PlayerInput pi;
     public float walkSpeed = 2.0f;
     public float runMultiplier = 2.0f;
+    public float jumpVelocity = 7f;
 
     [SerializeField] 
     private Animator anim;
     private Rigidbody rigid;
     private Vector3 planarVec;
+    private Vector3 thrustVec;
     private bool lockPlanar;
 
     private void Awake()
@@ -42,16 +44,31 @@ public class ActorController : MonoBehaviour
     private void FixedUpdate()
     {
         // rigid.position += movingVec * Time.fixedDeltaTime;  // 修改 rigid.position 移动角色
-        rigid.velocity = new Vector3(planarVec.x, rigid.velocity.y, planarVec.z);   // 修改 rigid.velocity 移动角色
+        rigid.velocity = new Vector3(planarVec.x, rigid.velocity.y, planarVec.z) + thrustVec; // 修改 rigid.velocity 移动角色
+        thrustVec = Vector3.zero;
     }
 
+    ///
+    /// Message processing block
+    ///
     public void OnJumpEnter()
     {
         pi.inputEnable = false;
         lockPlanar = true;
+        thrustVec = new Vector3(0f, jumpVelocity, 0f);
     }
 
-    public void OnJumpExit()
+    public void IsGround()
+    {
+        anim.SetBool("isGround", true);
+    }
+    
+    public void IsNotGround()
+    {
+        anim.SetBool("isGround", false);
+    }
+
+    public void OnGroundEnter()
     {
         pi.inputEnable = true;
         lockPlanar = false;
