@@ -28,6 +28,10 @@ public class ActorController : MonoBehaviour
         // 动画
         float targetRunMulti = Mathf.Lerp(anim.GetFloat("forward"), pi.Dmag * (pi.run ? 2.0f : 1.0f), 0.05f);
         anim.SetFloat("forward", targetRunMulti);
+        
+        // 下落后翻滚
+        if (rigid.velocity.magnitude > 5.0f)
+            anim.SetTrigger("roll");
 
         // 跳跃
         if (pi.jump) anim.SetTrigger("jump");
