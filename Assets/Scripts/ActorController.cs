@@ -73,4 +73,10 @@ public class ActorController : MonoBehaviour
         pi.inputEnable = true;
         lockPlanar = false;
     }
+
+    public void OnFallEnter()
+    {
+        pi.inputEnable = false;
+        lockPlanar = true;
+    }
 }
