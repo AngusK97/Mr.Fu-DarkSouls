@@ -5,9 +5,10 @@ public class ActorController : MonoBehaviour
 {
     public GameObject model;
     public PlayerInput pi;
-    public float walkSpeed = 2.0f;
+    public float walkSpeed = 2.4f;
     public float runMultiplier = 2.0f;
     public float jumpVelocity = 7f;
+    public float rollVelocity = 1f;
 
     [SerializeField] 
     private Animator anim;
@@ -30,7 +31,7 @@ public class ActorController : MonoBehaviour
         anim.SetFloat("forward", targetRunMulti);
         
         // 下落后翻滚
-        if (rigid.velocity.magnitude > 5.0f)
+        if (rigid.velocity.magnitude > 0f)
             anim.SetTrigger("roll");
 
         // 跳跃
@@ -80,6 +81,13 @@ public class ActorController : MonoBehaviour
 
     public void OnFallEnter()
     {
+        pi.inputEnable = false;
+        lockPlanar = true;
+    }
+
+    public void OnRollEnter()
+    {
+        thrustVec = new Vector3(rollVelocity, rollVelocity, 0f);
         pi.inputEnable = false;
         lockPlanar = true;
     }
