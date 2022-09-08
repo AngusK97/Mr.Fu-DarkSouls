@@ -304,10 +304,16 @@ MonoBehaviour:
   keyB: j
   keyC: 
   keyD: 
+  keyJUp: up
+  keyJDown: down
+  keyJRight: right
+  keyJLeft: left
   Dup: 0
   Dright: 0
   Dmag: 0
   Dvec: {x: 0, y: 0, z: 0}
+  Jup: 0
+  Jright: 0
   run: 0
   jump: 0
   inputEnable: 1
