@@ -58,9 +58,9 @@ public class ActorController : MonoBehaviour
     ///
     public void OnJumpEnter()
     {
+        thrustVec = new Vector3(0f, jumpVelocity, 0f);
         pi.inputEnable = false;
         lockPlanar = true;
-        thrustVec = new Vector3(0f, jumpVelocity, 0f);
     }
 
     public void IsGround()
@@ -87,8 +87,19 @@ public class ActorController : MonoBehaviour
 
     public void OnRollEnter()
     {
-        thrustVec = new Vector3(rollVelocity, rollVelocity, 0f);
+        thrustVec = new Vector3(0f, rollVelocity, 0f);
         pi.inputEnable = false;
         lockPlanar = true;
+    }
+
+    public void OnJabEnter()
+    {
+        pi.inputEnable = false;
+        lockPlanar = true;
+    }
+
+    public void OnJabUpdate()
+    {
+        thrustVec = model.transform.forward * anim.GetFloat("jabVelocity");
     }
 }

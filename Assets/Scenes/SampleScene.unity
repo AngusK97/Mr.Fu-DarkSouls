@@ -263,7 +263,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   capcol: {fileID: 459272359}
-  offset: 0.1
+  offset: 0.3
 --- !u!1 &459272357
 GameObject:
   m_ObjectHideFlags: 0
