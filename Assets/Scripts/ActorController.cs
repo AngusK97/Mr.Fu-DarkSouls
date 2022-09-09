@@ -16,6 +16,7 @@ public class ActorController : MonoBehaviour
     private Vector3 planarVec;
     private Vector3 thrustVec;
     private bool lockPlanar;
+    private bool canAttack;
 
     private void Awake()
     {
@@ -35,7 +36,15 @@ public class ActorController : MonoBehaviour
             anim.SetTrigger("roll");
 
         // 跳跃
-        if (pi.jump) anim.SetTrigger("jump");
+        if (pi.jump)
+        {
+            anim.SetTrigger("jump");
+            canAttack = false;
+        }
+
+        // 跳跃
+        if (pi.attack && CheckState("ground") && canAttack)
+            anim.SetTrigger("attack");
         
         // 角色旋转
         if (pi.Dmag > 0.1f)
@@ -52,6 +61,14 @@ public class ActorController : MonoBehaviour
         rigid.velocity = new Vector3(planarVec.x, rigid.velocity.y, planarVec.z) + thrustVec; // 修改 rigid.velocity 移动角色
         thrustVec = Vector3.zero;
     }
+
+    private bool CheckState(string stateName, string layerName = "Base Layer")
+    {
+        int layerIndex = anim.GetLayerIndex(layerName);
+        bool result = anim.GetCurrentAnimatorStateInfo(layerIndex).IsName(stateName);
+        return result;
+    }
+    
 
     ///
     /// Message processing block
@@ -77,6 +94,7 @@ public class ActorController : MonoBehaviour
     {
         pi.inputEnable = true;
         lockPlanar = false;
+        canAttack = true;
     }
 
     public void OnFallEnter()
@@ -101,5 +119,22 @@ public class ActorController : MonoBehaviour
     public void OnJabUpdate()
     {
         thrustVec = model.transform.forward * anim.GetFloat("jabVelocity");
+    }
+
+    public void OnAttackIdleEnter()
+    {
+        pi.inputEnable = true;
+        anim.SetLayerWeight(anim.GetLayerIndex("attack"), 0f);
+    }
+
+    public void OnAttack1hAEnter()
+    {
+        pi.inputEnable = false;
+        anim.SetLayerWeight(anim.GetLayerIndex("attack"), 1f);
+    }
+
+    public void OnAttack1hAUpdate()
+    {
+        thrustVec = model.transform.forward * anim.GetFloat("attack1hAVelocity");
     }
 }

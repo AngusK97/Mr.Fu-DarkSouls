@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Input -> Signal
+/// </summary>
 public class PlayerInput : MonoBehaviour
 {
     [Header("===== Keys settings =====")]
@@ -23,6 +26,7 @@ public class PlayerInput : MonoBehaviour
     public float Dright;
     public float Dmag;
     public Vector3 Dvec;
+    
     public float Jup;
     public float Jright;
 
@@ -31,6 +35,8 @@ public class PlayerInput : MonoBehaviour
     // 2. trigger once signal
     public bool jump;
     private bool lastJump;
+    public bool attack;
+    private bool lastAttack;
     // 3. double trigger
 
     [Header("===== Others =====")]
@@ -43,15 +49,15 @@ public class PlayerInput : MonoBehaviour
 
     private void Update()
     {
-        Jup = (Input.GetKey(keyJUp) ? 1.0f : 0) - (Input.GetKey(keyJDown) ? 1.0f : 0);
-        Jright = (Input.GetKey(keyJRight) ? 1.0f : 0) - (Input.GetKey(keyJLeft) ? 1.0f : 0);
-        targetDup = (Input.GetKey(keyUp) ? 1.0f : 0) - (Input.GetKey(keyDown) ? 1.0f : 0);
-        targetDright = (Input.GetKey(keyRight) ?  1.0f : 0) - (Input.GetKey(keyLeft) ? 1.0f : 0);
+        Jup = (Input.GetKey(keyJUp) ? 1.0f : 0f) - (Input.GetKey(keyJDown) ? 1.0f : 0f);
+        Jright = (Input.GetKey(keyJRight) ? 1.0f : 0f) - (Input.GetKey(keyJLeft) ? 1.0f : 0f);
+        targetDup = (Input.GetKey(keyUp) ? 1.0f : 0f) - (Input.GetKey(keyDown) ? 1.0f : 0f);
+        targetDright = (Input.GetKey(keyRight) ?  1.0f : 0f) - (Input.GetKey(keyLeft) ? 1.0f : 0f);
 
         if (inputEnable == false)
         {
-            targetDup = 0;
-            targetDright = 0;
+            targetDup = 0f;
+            targetDright = 0f;
         }
 
         Dup = Mathf.SmoothDamp(Dup, targetDup, ref velocityDup, 0.1f);
@@ -73,6 +79,11 @@ public class PlayerInput : MonoBehaviour
         if (newJump != lastJump && newJump) jump = true;
         else jump = false;
         lastJump = newJump;
+        
+        bool newAttack = Input.GetKey(keyC);
+        if (newAttack != lastAttack && newAttack) attack = true;
+        else attack = false;
+        lastAttack = newAttack;
     }
 
     private Vector2 SquareToCircle(Vector2 input)

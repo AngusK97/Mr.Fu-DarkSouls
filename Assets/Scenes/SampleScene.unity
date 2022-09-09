@@ -302,7 +302,7 @@ MonoBehaviour:
   keyRight: d
   keyA: left shift
   keyB: j
-  keyC: 
+  keyC: k
   keyD: 
   keyJUp: up
   keyJDown: down
@@ -316,6 +316,7 @@ MonoBehaviour:
   Jright: 0
   run: 0
   jump: 0
+  attack: 0
   inputEnable: 1
 --- !u!136 &459272359
 CapsuleCollider:
@@ -875,10 +876,10 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1533791488}
-  m_LocalRotation: {x: -0.19303928, y: -0, z: -0, w: 0.9811911}
-  m_LocalPosition: {x: -0.109232806, y: 3.09, z: -0.74}
-  m_LocalScale: {x: 9, y: 1, z: 19.766602}
+  m_LocalRotation: {x: -0.258819, y: 0, z: 0, w: 0.9659259}
+  m_LocalPosition: {x: -0.109232806, y: 2.1, z: -4.64}
+  m_LocalScale: {x: 9, y: 1, z: 10.283582}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: -22.26, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -30, y: 0, z: 0}
