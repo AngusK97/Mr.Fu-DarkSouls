@@ -12,7 +12,7 @@ public class CameraController : MonoBehaviour
     private GameObject model;
     private float tempEulerX;
 
-    private GameObject camera;
+    private GameObject myCamera;
     private Vector3 cameraDampVelocity;
     
     void Awake()
@@ -21,7 +21,7 @@ public class CameraController : MonoBehaviour
         playerHandle = cameraHandle.transform.parent.gameObject;
         model = playerHandle.GetComponent<ActorController>().model;
         tempEulerX = 20f;
-        camera = Camera.main.gameObject;
+        myCamera = Camera.main.gameObject;
     }
 
     private void FixedUpdate()  // 放 Update / LateUpdate 都会发生抖动
@@ -37,7 +37,7 @@ public class CameraController : MonoBehaviour
         model.transform.eulerAngles = tempModelEuler;
         
         // camera.transform.position = Vector3.Lerp(camera.transform.position, transform.position, 0.02f);  // Vector3.Lerp
-        camera.transform.position = Vector3.SmoothDamp(camera.transform.position, transform.position, ref cameraDampVelocity, cameraDamp);  // Vector3.SmoothDamp
-        camera.transform.eulerAngles = transform.eulerAngles;
+        myCamera.transform.position = Vector3.SmoothDamp(myCamera.transform.position, transform.position, ref cameraDampVelocity, cameraDamp);  // Vector3.SmoothDamp
+        myCamera.transform.eulerAngles = transform.eulerAngles;
     }
 }

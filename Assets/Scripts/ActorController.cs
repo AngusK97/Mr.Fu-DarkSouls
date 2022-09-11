@@ -22,6 +22,7 @@ public class ActorController : MonoBehaviour
     private bool canAttack;
     private bool lockPlanar;
     private CapsuleCollider col;
+    private float lerpTarget;
 
     private void Awake()
     {
@@ -136,17 +137,27 @@ public class ActorController : MonoBehaviour
     public void OnAttackIdleEnter()
     {
         pi.inputEnable = true;
-        anim.SetLayerWeight(anim.GetLayerIndex("attack"), 0f);
+        lerpTarget = 0f;
+    }
+
+    public void OnAttackIdleUpdate()
+    {
+        float currentWeight = anim.GetLayerWeight(anim.GetLayerIndex("attack"));
+        currentWeight = Mathf.Lerp(currentWeight, lerpTarget, 0.01f);
+        anim.SetLayerWeight(anim.GetLayerIndex("attack"), currentWeight);
     }
 
     public void OnAttack1hAEnter()
     {
         pi.inputEnable = false;
-        anim.SetLayerWeight(anim.GetLayerIndex("attack"), 1f);
+        lerpTarget = 1.0f;
     }
 
     public void OnAttack1hAUpdate()
     {
         thrustVec = model.transform.forward * anim.GetFloat("attack1hAVelocity");
+        float currentWeight = anim.GetLayerWeight(anim.GetLayerIndex("attack"));
+        currentWeight = Mathf.Lerp(currentWeight, lerpTarget, 0.01f);
+        anim.SetLayerWeight(anim.GetLayerIndex("attack"), currentWeight);
     }
 }
