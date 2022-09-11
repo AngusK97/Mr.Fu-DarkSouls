@@ -23,6 +23,7 @@ public class ActorController : MonoBehaviour
     private bool lockPlanar;
     private CapsuleCollider col;
     private float lerpTarget;
+    private Vector3 deltaPos;
 
     private void Awake()
     {
@@ -64,9 +65,11 @@ public class ActorController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        rigid.position += deltaPos;
         // rigid.position += movingVec * Time.fixedDeltaTime;  // 修改 rigid.position 移动角色
         rigid.velocity = new Vector3(planarVec.x, rigid.velocity.y, planarVec.z) + thrustVec; // 修改 rigid.velocity 移动角色
         thrustVec = Vector3.zero;
+        deltaPos = Vector3.zero;
     }
 
     private bool CheckState(string stateName, string layerName = "Base Layer")
@@ -159,5 +162,11 @@ public class ActorController : MonoBehaviour
         float currentWeight = anim.GetLayerWeight(anim.GetLayerIndex("attack"));
         currentWeight = Mathf.Lerp(currentWeight, lerpTarget, 0.01f);
         anim.SetLayerWeight(anim.GetLayerIndex("attack"), currentWeight);
+    }
+
+    public void OnUpdateRM(object _deltaPos)
+    {
+        if (CheckState("attack1hC", "attack"))
+            deltaPos += (Vector3) _deltaPos;
     }
 }
