@@ -11,7 +11,6 @@ public class TriggerControl : MonoBehaviour
 
     public void ResetTrigger(string triggerName)
     {
-        print("reset!!!");
         anim.ResetTrigger(triggerName);
     }
 }
