@@ -15,15 +15,16 @@ public class TesterJoystick : MonoBehaviour
         // print(Input.GetAxis("padH"));
         // print(Input.GetAxis("padV"));
         
+        // print(Input.GetAxis("LT"));
+        // print(Input.GetAxis("RT"));
+        
         // print(Input.GetButtonDown("btn0"));
         // print(Input.GetButtonDown("btn1"));
         // print(Input.GetButtonDown("btn2"));
         // print(Input.GetButtonDown("btn3"));
         
         // print(Input.GetButtonDown("LB"));
-        // print(Input.GetButtonDown("LT"));
         // print(Input.GetButtonDown("RB"));
-        // print(Input.GetButtonDown("RT"));
         
         var values = Enum.GetValues(typeof(KeyCode));  // 存储所有的按键
         for (int x = 0; x < values.Length; x++)
