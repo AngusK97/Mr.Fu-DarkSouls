@@ -3,7 +3,7 @@ using UnityEngine;
 /// <summary>
 /// Input -> Signal
 /// </summary>
-public class PlayerInput : MonoBehaviour
+public class KeyboardInput : IUserInput
 {
     [Header("===== Keys settings =====")]
     public string keyUp = "w";
@@ -20,32 +20,6 @@ public class PlayerInput : MonoBehaviour
     public string keyJDown;
     public string keyJRight;
     public string keyJLeft;
-
-    [Header("===== Output signals =====")]
-    public float Dup;
-    public float Dright;
-    public float Dmag;
-    public Vector3 Dvec;
-    
-    public float Jup;
-    public float Jright;
-
-    // 1. pressing signal
-    public bool run;
-    // 2. trigger once signal
-    public bool jump;
-    private bool lastJump;
-    public bool attack;
-    private bool lastAttack;
-    // 3. double trigger
-
-    [Header("===== Others =====")]
-    public bool inputEnable = true;
-    
-    private float targetDup;
-    private float targetDright;
-    private float velocityDup;
-    private float velocityDright;
 
     private void Update()
     {
@@ -84,13 +58,5 @@ public class PlayerInput : MonoBehaviour
         if (newAttack != lastAttack && newAttack) attack = true;
         else attack = false;
         lastAttack = newAttack;
-    }
-
-    private Vector2 SquareToCircle(Vector2 input)
-    {
-        Vector2 output = Vector2.zero;
-        output.x = input.x * Mathf.Sqrt(1 - (input.y * input.y) / 2.0f);
-        output.y = input.y * Mathf.Sqrt(1 - (input.x * input.x) / 2.0f);
-        return output;
     }
 }

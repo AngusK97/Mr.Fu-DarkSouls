@@ -2,10 +2,11 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    public PlayerInput pi;
     public float horizontalSpeed = 100.0f;
     public float verticalSpeed = 100.0f;
     public float cameraDamp = 1f;
+ 
+    private IUserInput pi;
     
     private GameObject playerHandle;
     private GameObject cameraHandle;
@@ -19,7 +20,9 @@ public class CameraController : MonoBehaviour
     {
         cameraHandle = transform.parent.gameObject;
         playerHandle = cameraHandle.transform.parent.gameObject;
-        model = playerHandle.GetComponent<ActorController>().model;
+        var ac = playerHandle.GetComponent<ActorController>();
+        pi = ac.pi;
+        model = ac.model;
         tempEulerX = 20f;
         myCamera = Camera.main.gameObject;
     }

@@ -275,8 +275,9 @@ GameObject:
   - component: {fileID: 459272360}
   - component: {fileID: 459272359}
   - component: {fileID: 459272362}
-  - component: {fileID: 459272358}
   - component: {fileID: 459272361}
+  - component: {fileID: 459272358}
+  - component: {fileID: 459272363}
   m_Layer: 0
   m_Name: PlayerHandle
   m_TagString: Untagged
@@ -296,6 +297,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7689e3bad8111fb4bac87dc48fb28b8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Dup: 0
+  Dright: 0
+  Dmag: 0
+  Dvec: {x: 0, y: 0, z: 0}
+  Jup: 0
+  Jright: 0
+  run: 0
+  jump: 0
+  attack: 0
+  inputEnable: 1
   keyUp: w
   keyDown: s
   keyLeft: a
@@ -308,16 +319,6 @@ MonoBehaviour:
   keyJDown: down
   keyJRight: right
   keyJLeft: left
-  Dup: 0
-  Dright: 0
-  Dmag: 0
-  Dvec: {x: 0, y: 0, z: 0}
-  Jup: 0
-  Jright: 0
-  run: 0
-  jump: 0
-  attack: 0
-  inputEnable: 1
 --- !u!136 &459272359
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -386,6 +387,36 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &459272363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 459272357}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b1cf3e6adf93c248800b8856ae3da89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Dup: 0
+  Dright: 0
+  Dmag: 0
+  Dvec: {x: 0, y: 0, z: 0}
+  Jup: 0
+  Jright: 0
+  run: 0
+  jump: 0
+  attack: 0
+  inputEnable: 1
+  axisX: axisX
+  axisY: axisY
+  axisJright: axis4
+  axisJup: axis5
+  btnA: btn0
+  btnB: btn1
+  btnC: btn2
+  btnD: btn3
 --- !u!4 &543369894 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400138, guid: 2f9d958fbcd96e44ca35a77a15e3187a, type: 3}
@@ -675,7 +706,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05bb1ae9e4517cf44bfcb69e16e00f20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pi: {fileID: 459272358}
   horizontalSpeed: 100
   verticalSpeed: 100
   cameraDamp: 0.05
