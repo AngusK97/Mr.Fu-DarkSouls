@@ -21,6 +21,8 @@ public class KeyboardInput : IUserInput
     public string keyJRight;
     public string keyJLeft;
 
+    public string keyL;
+
     private void Update()
     {
         Jup = (Input.GetKey(keyJUp) ? 1.0f : 0f) - (Input.GetKey(keyJDown) ? 1.0f : 0f);
@@ -46,6 +48,7 @@ public class KeyboardInput : IUserInput
 
         // pressing signal
         run = Input.GetKey(keyA);
+        defense = Input.GetKey(keyL);
 
         // trigger once signal（等价于 Input.GetKeyDown()）
         // jump = Input.GetKeyDown(keyB);

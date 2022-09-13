@@ -304,6 +304,7 @@ MonoBehaviour:
   Jup: 0
   Jright: 0
   run: 0
+  defense: 0
   jump: 0
   attack: 0
   inputEnable: 1
@@ -319,6 +320,7 @@ MonoBehaviour:
   keyJDown: down
   keyJRight: right
   keyJLeft: left
+  keyL: l
 --- !u!136 &459272359
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -406,6 +408,7 @@ MonoBehaviour:
   Jup: 0
   Jright: 0
   run: 0
+  defense: 0
   jump: 0
   attack: 0
   inputEnable: 1
@@ -417,6 +420,8 @@ MonoBehaviour:
   btnB: btn1
   btnC: btn2
   btnD: btn3
+  btnLB: btn4
+  axisLT: axis9
 --- !u!4 &543369894 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400138, guid: 2f9d958fbcd96e44ca35a77a15e3187a, type: 3}

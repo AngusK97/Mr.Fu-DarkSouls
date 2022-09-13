@@ -13,6 +13,8 @@ public class JoystickInput : IUserInput
     public string btnB = "btn1";
     public string btnC = "btn2";
     public string btnD = "btn3";
+    public string btnLB = "btn4";
+    public string axisLT = "axis9";
     
     void Update()
     {
@@ -40,6 +42,7 @@ public class JoystickInput : IUserInput
         
         // pressing signal
         run = Input.GetButton(btnA);
+        defense = Input.GetButton(btnLB);
 
         // trigger once signal（等价于 Input.GetKeyDown()）
         // jump = Input.GetKeyDown(keyB);
