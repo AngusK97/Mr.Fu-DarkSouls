@@ -9,6 +9,7 @@ public class JoystickInput : IUserInput
     public string axisY = "axisY";
     public string axisJright = "axis4";
     public string axisJup = "axis5";
+    
     public string btnA = "btn0";
     public string btnB = "btn1";
     public string btnC = "btn2";
@@ -16,8 +17,20 @@ public class JoystickInput : IUserInput
     public string btnLB = "btn4";
     public string axisLT = "axis9";
     
+    private MyButton buttonA = new MyButton();
+    private MyButton buttonB = new MyButton();
+    private MyButton buttonC = new MyButton();
+    private MyButton buttonD = new MyButton();
+    private MyButton buttonLB = new MyButton();
+    
     void Update()
     {
+        buttonA.Tick(Input.GetButton(btnA));
+        buttonB.Tick(Input.GetButton(btnB));
+        buttonC.Tick(Input.GetButton(btnC));
+        buttonD.Tick(Input.GetButton(btnD));
+        buttonLB.Tick(Input.GetButton(btnLB));
+        
         Jup = Input.GetAxis(axisJup);
         Jright = Input.GetAxis(axisJright);
         
@@ -41,19 +54,9 @@ public class JoystickInput : IUserInput
         Dvec = Dright2 * transform.right + Dup2 * transform.forward;
         
         // pressing signal
-        run = Input.GetButton(btnA);
-        defense = Input.GetButton(btnLB);
-
-        // trigger once signal（等价于 Input.GetKeyDown()）
-        // jump = Input.GetKeyDown(keyB);
-        bool newJump = Input.GetButton(btnB);
-        if (newJump != lastJump && newJump) jump = true;
-        else jump = false;
-        lastJump = newJump;
-        
-        bool newAttack = Input.GetButton(btnC);
-        if (newAttack != lastAttack && newAttack) attack = true;
-        else attack = false;
-        lastAttack = newAttack;
+        run = buttonA.IsPressing;
+        jump = buttonB.OnPressed;
+        attack = buttonC.OnPressed;
+        defense = buttonB.IsPressing;
     }
 }
