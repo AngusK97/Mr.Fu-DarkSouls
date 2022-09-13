@@ -314,13 +314,16 @@ MonoBehaviour:
   keyRight: d
   keyA: left shift
   keyB: j
-  keyC: k
-  keyD: 
+  keyC: mouse 0
+  keyD: mouse 1
   keyJUp: up
   keyJDown: down
   keyJRight: right
   keyJLeft: left
   keyL: l
+  mouseEnable: 1
+  mouseSensitivityX: 1
+  mouseSensitivityY: 1
 --- !u!136 &459272359
 CapsuleCollider:
   m_ObjectHideFlags: 0

@@ -25,6 +25,8 @@ public class CameraController : MonoBehaviour
         model = ac.model;
         tempEulerX = 20f;
         myCamera = Camera.main.gameObject;
+        
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void FixedUpdate()  // 放 Update / LateUpdate 都会发生抖动

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 /// <summary>
@@ -21,12 +22,24 @@ public class KeyboardInput : IUserInput
     public string keyJRight;
     public string keyJLeft;
 
-    public string keyL;
+    [Header("===== Mouse settings =====")]
+    public bool mouseEnable;
+    public float mouseSensitivityX = 1.0f;
+    public float mouseSensitivityY = 1.0f;
 
     private void Update()
     {
-        Jup = (Input.GetKey(keyJUp) ? 1.0f : 0f) - (Input.GetKey(keyJDown) ? 1.0f : 0f);
-        Jright = (Input.GetKey(keyJRight) ? 1.0f : 0f) - (Input.GetKey(keyJLeft) ? 1.0f : 0f);
+        if (mouseEnable)
+        {
+            Jup = Input.GetAxis("Mouse Y") * 2.5f * mouseSensitivityY;
+            Jright = Input.GetAxis("Mouse X") * 3f * mouseSensitivityX;
+        }
+        else
+        {
+            Jup = (Input.GetKey(keyJUp) ? 1.0f : 0f) - (Input.GetKey(keyJDown) ? 1.0f : 0f);
+            Jright = (Input.GetKey(keyJRight) ? 1.0f : 0f) - (Input.GetKey(keyJLeft) ? 1.0f : 0f);       
+        }
+        
         targetDup = (Input.GetKey(keyUp) ? 1.0f : 0f) - (Input.GetKey(keyDown) ? 1.0f : 0f);
         targetDright = (Input.GetKey(keyRight) ?  1.0f : 0f) - (Input.GetKey(keyLeft) ? 1.0f : 0f);
 
@@ -48,7 +61,7 @@ public class KeyboardInput : IUserInput
 
         // pressing signal
         run = Input.GetKey(keyA);
-        defense = Input.GetKey(keyL);
+        defense = Input.GetKey(keyD);
 
         // trigger once signal（等价于 Input.GetKeyDown()）
         // jump = Input.GetKeyDown(keyB);
