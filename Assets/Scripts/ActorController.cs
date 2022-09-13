@@ -155,7 +155,7 @@ public class ActorController : MonoBehaviour
     public void OnAttackIdleUpdate()
     {
         float currentWeight = anim.GetLayerWeight(anim.GetLayerIndex("attack"));
-        currentWeight = Mathf.Lerp(currentWeight, lerpTarget, 0.01f);
+        currentWeight = Mathf.Lerp(currentWeight, lerpTarget, 0.1f);
         anim.SetLayerWeight(anim.GetLayerIndex("attack"), currentWeight);
     }
 
@@ -169,7 +169,7 @@ public class ActorController : MonoBehaviour
     {
         thrustVec = model.transform.forward * anim.GetFloat("attack1hAVelocity");
         float currentWeight = anim.GetLayerWeight(anim.GetLayerIndex("attack"));
-        currentWeight = Mathf.Lerp(currentWeight, lerpTarget, 0.01f);
+        currentWeight = Mathf.Lerp(currentWeight, lerpTarget, 0.1f);
         anim.SetLayerWeight(anim.GetLayerIndex("attack"), currentWeight);
     }
 

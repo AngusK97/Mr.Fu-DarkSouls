@@ -41,6 +41,9 @@ public class CameraController : MonoBehaviour
         
         // camera.transform.position = Vector3.Lerp(camera.transform.position, transform.position, 0.02f);  // Vector3.Lerp
         myCamera.transform.position = Vector3.SmoothDamp(myCamera.transform.position, transform.position, ref cameraDampVelocity, cameraDamp);  // Vector3.SmoothDamp
-        myCamera.transform.eulerAngles = transform.eulerAngles;
+        
+        // myCamera.transform.eulerAngles = transform.eulerAngles;
+        myCamera.transform.eulerAngles = Vector3.Slerp(myCamera.transform.eulerAngles, transform.eulerAngles, 0.1f);
+        // myCamera.transform.LookAt(cameraHandle.transform);
     }
 }
