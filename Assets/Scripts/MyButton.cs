@@ -6,30 +6,51 @@ public class MyButton
     public bool OnPressed = false;
     public bool OnReleased = false;
     public bool IsExtending = false;
+    public bool IsDelaying = false;
 
     public float extendingDuration = 0.15f;
+    public float delayingDuration = 0.15f;
 
     private bool curState = false;
     private bool lastState = false;
     
     private MyTimer extTimer = new MyTimer();
+    private MyTimer delayTimer = new MyTimer();
 
     public void Tick(bool input)
     {
-        extTimer.Tick();    
+        extTimer.Tick();
+        delayTimer.Tick();
         
         curState = input;
         IsPressing = curState;
-        OnPressed = !lastState && curState;
-        OnReleased = lastState && !curState;
-        lastState = curState;
 
-        if (OnReleased)
+        OnPressed = false;
+        OnReleased = false;
+        IsExtending = false;
+        IsDelaying = false;
+
+        if (curState != lastState)
         {
-            StartTimer(extTimer, extendingDuration);
+            if (curState)
+            {
+                OnPressed = true;
+                StartTimer(delayTimer, delayingDuration);
+            }
+            else
+            {
+                OnReleased = true;
+                StartTimer(extTimer, extendingDuration);
+            }
         }
+        
+        lastState = curState;
+        
+        if (extTimer.state == MyTimer.STATE.RUN)
+            IsExtending = true;
 
-        IsExtending = extTimer.state == MyTimer.STATE.RUN;
+        if (delayTimer.state == MyTimer.STATE.RUN)
+            IsDelaying = true;
     }
 
     private void StartTimer(MyTimer timer, float duration)

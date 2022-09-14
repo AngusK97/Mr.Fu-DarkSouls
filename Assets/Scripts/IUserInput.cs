@@ -21,6 +21,7 @@ public abstract class IUserInput : MonoBehaviour
     protected bool lastJump;
     public bool attack;
     protected bool lastAttack;
+    public bool roll;
     // 3. double trigger
 
     [Header("===== Others =====")]

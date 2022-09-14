@@ -50,8 +50,11 @@ public class ActorController : MonoBehaviour
         anim.SetBool("defense", pi.defense);
         
         // 下落后翻滚
-        if (rigid.velocity.magnitude > 0f)
+        if (pi.roll || rigid.velocity.magnitude > 7f)
+        {
             anim.SetTrigger("roll");
+            canAttack = false;
+        }
 
         // 跳跃
         if (pi.jump)

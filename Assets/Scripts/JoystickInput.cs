@@ -54,8 +54,10 @@ public class JoystickInput : IUserInput
         Dvec = Dright2 * transform.right + Dup2 * transform.forward;
         
         // pressing signal
-        run = buttonA.IsPressing;
-        jump = buttonB.OnPressed;
+        run = (buttonA.IsPressing && !buttonA.IsDelaying) || buttonA.IsExtending;
+        jump = buttonA.OnPressed && buttonA.IsExtending;
+        roll = buttonA.OnReleased && buttonA.IsDelaying;
+        
         attack = buttonC.OnPressed;
         defense = buttonB.IsPressing;
     }
