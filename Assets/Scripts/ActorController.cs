@@ -4,6 +4,7 @@ using UnityEngine;
 public class ActorController : MonoBehaviour
 {
     public GameObject model;
+    public CameraController camCon;
     public IUserInput pi;
     public float walkSpeed = 2.4f;
     public float runMultiplier = 2.0f;
@@ -44,6 +45,9 @@ public class ActorController : MonoBehaviour
 
     private void Update()
     {
+        if (pi.lockOn)
+            camCon.LockUnlock();
+        
         // 动画
         float targetRunMulti = Mathf.Lerp(anim.GetFloat("forward"), pi.Dmag * (pi.run ? 2.0f : 1.0f), 0.05f);
         anim.SetFloat("forward", targetRunMulti);

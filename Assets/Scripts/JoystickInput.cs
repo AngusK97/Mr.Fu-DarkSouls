@@ -16,12 +16,14 @@ public class JoystickInput : IUserInput
     public string btnD = "btn3";
     public string btnLB = "btn4";
     public string axisLT = "axis9";
+    public string btnJstick = "btn9";
     
     private MyButton buttonA = new MyButton();
     private MyButton buttonB = new MyButton();
     private MyButton buttonC = new MyButton();
     private MyButton buttonD = new MyButton();
     private MyButton buttonLB = new MyButton();
+    private MyButton buttonJstick = new MyButton();
     
     void Update()
     {
@@ -30,6 +32,7 @@ public class JoystickInput : IUserInput
         buttonC.Tick(Input.GetButton(btnC));
         buttonD.Tick(Input.GetButton(btnD));
         buttonLB.Tick(Input.GetButton(btnLB));
+        buttonJstick.Tick(Input.GetButton(btnJstick));
         
         Jup = Input.GetAxis(axisJup);
         Jright = Input.GetAxis(axisJright);
@@ -60,5 +63,6 @@ public class JoystickInput : IUserInput
         
         attack = buttonC.OnPressed;
         defense = buttonB.IsPressing;
+        lockOn = buttonJstick.OnPressed;
     }
 }

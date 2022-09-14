@@ -15,6 +15,8 @@ public class CameraController : MonoBehaviour
 
     private GameObject myCamera;
     private Vector3 cameraDampVelocity;
+    [SerializeField]
+    private GameObject lockTarget;
     
     void Awake()
     {
@@ -47,5 +49,27 @@ public class CameraController : MonoBehaviour
         // myCamera.transform.eulerAngles = transform.eulerAngles;
         myCamera.transform.rotation = Quaternion.Slerp(myCamera.transform.rotation, transform.rotation, 0.3f);
         // myCamera.transform.LookAt(cameraHandle.transform);
+    }
+
+    public void LockUnlock()
+    {
+        if (lockTarget == null)
+        {
+            // try to lock
+            Vector3 modelOrigin1 = model.transform.position;
+            Vector3 modelOrigin2 = modelOrigin1 + new Vector3(0, 1, 0);
+            Vector3 boxCenter = modelOrigin2 + model.transform.forward * 5;
+            Collider[] cols = Physics.OverlapBox(boxCenter, new Vector3(0.5f, 0.5f, 0.5f), model.transform.rotation, LayerMask.GetMask("Enemy"));
+            foreach (var col in cols)
+            {
+                lockTarget = col.gameObject;
+                break;
+            }
+        }
+        else
+        {
+            // release lock
+            lockTarget = null;
+        }
     }
 }
