@@ -74,5 +74,7 @@ public class KeyboardInput : IUserInput
         if (newAttack != lastAttack && newAttack) attack = true;
         else attack = false;
         lastAttack = newAttack;
+
+        lockOn = Input.GetKeyDown(KeyCode.Q);
     }
 }
