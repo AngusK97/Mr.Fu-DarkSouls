@@ -510,10 +510,11 @@ MonoBehaviour:
   keyDown: s
   keyLeft: a
   keyRight: d
-  keyA: left shift
-  keyB: j
+  keyA: space
+  keyB: left shift
   keyC: mouse 0
   keyD: mouse 1
+  keyQ: q
   keyJUp: up
   keyJDown: down
   keyJRight: right
@@ -928,7 +929,7 @@ MonoBehaviour:
   verticalSpeed: 100
   cameraDamp: 0.05
   lockDot: {fileID: 1967029388}
-  lockTarget: {fileID: 0}
+  lockState: 0
 --- !u!1001 &1012429648
 PrefabInstance:
   m_ObjectHideFlags: 0

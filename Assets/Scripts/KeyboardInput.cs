@@ -16,6 +16,7 @@ public class KeyboardInput : IUserInput
     public string keyB;
     public string keyC;
     public string keyD;
+    public string keyQ;
     
     public string keyJUp;
     public string keyJDown;
@@ -27,8 +28,20 @@ public class KeyboardInput : IUserInput
     public float mouseSensitivityX = 1.0f;
     public float mouseSensitivityY = 1.0f;
 
+    private MyButton buttonA = new MyButton();
+    private MyButton buttonB = new MyButton();
+    private MyButton buttonC = new MyButton();
+    private MyButton buttonD = new MyButton();
+    private MyButton buttonQ = new MyButton();
+    
     private void Update()
     {
+        buttonA.Tick(Input.GetKey(keyA));
+        buttonB.Tick(Input.GetKey(keyB));
+        buttonC.Tick(Input.GetKey(keyC));
+        buttonD.Tick(Input.GetKey(keyD));
+        buttonQ.Tick(Input.GetKey(keyQ));
+        
         if (mouseEnable)
         {
             Jup = Input.GetAxis("Mouse Y") * 2.5f * mouseSensitivityY;
@@ -59,22 +72,12 @@ public class KeyboardInput : IUserInput
         Dmag = Mathf.Sqrt((Dup2 * Dup2) + (Dright2 * Dright2));
         Dvec = Dright2 * transform.right + Dup2 * transform.forward;
 
-        // pressing signal
-        run = Input.GetKey(keyA);
-        defense = Input.GetKey(keyD);
-
-        // trigger once signal（等价于 Input.GetKeyDown()）
-        // jump = Input.GetKeyDown(keyB);
-        bool newJump = Input.GetKey(keyB);
-        if (newJump != lastJump && newJump) jump = true;
-        else jump = false;
-        lastJump = newJump;
+        run = (buttonA.IsPressing && !buttonA.IsDelaying) || buttonA.IsExtending;
+        jump = buttonA.OnPressed && buttonA.IsExtending;
+        roll = buttonA.OnReleased && buttonA.IsDelaying;
         
-        bool newAttack = Input.GetKey(keyC);
-        if (newAttack != lastAttack && newAttack) attack = true;
-        else attack = false;
-        lastAttack = newAttack;
-
-        lockOn = Input.GetKeyDown(KeyCode.Q);
+        attack = buttonC.OnPressed;
+        defense = buttonB.IsPressing;
+        lockOn = buttonQ.OnPressed;
     }
 }
