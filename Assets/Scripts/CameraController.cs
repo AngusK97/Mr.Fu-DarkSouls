@@ -35,21 +35,23 @@ public class CameraController : MonoBehaviour
     {
         if (lockTarget == null)
         {
-            Vector3 tempModelEuler = model.transform.eulerAngles;
-        
+            // camera horizontal move
             playerHandle.transform.Rotate(Vector3.up, pi.Jright * horizontalSpeed * Time.deltaTime);
         
+            // camera vertical move
             tempEulerX -= pi.Jup * verticalSpeed * Time.deltaTime;
             tempEulerX = Mathf.Clamp(tempEulerX, -40, 30);
             cameraHandle.transform.localEulerAngles = new Vector3(tempEulerX, 0f, 0f);
-
-            model.transform.eulerAngles = tempModelEuler;   
+            
+            // Vector3 tempModelEuler = model.transform.eulerAngles;
+            // model.transform.eulerAngles = tempModelEuler;
         }
         else
         {
             Vector3 tempForward = lockTarget.transform.position - model.transform.position;
             tempForward.y = 0;
-            playerHandle.transform.forward = tempForward; 
+            playerHandle.transform.forward = tempForward;
+            transform.LookAt(lockTarget.transform);
         }
 
         // camera.transform.position = Vector3.Lerp(camera.transform.position, transform.position, 0.02f);  // Vector3.Lerp
