@@ -1,10 +1,12 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CameraController : MonoBehaviour
 {
     public float horizontalSpeed = 100.0f;
     public float verticalSpeed = 100.0f;
     public float cameraDamp = 1f;
+    public Image lockDot;
  
     private IUserInput pi;
     
@@ -15,7 +17,6 @@ public class CameraController : MonoBehaviour
 
     private GameObject myCamera;
     private Vector3 cameraDampVelocity;
-    [SerializeField]
     private GameObject lockTarget;
     
     void Awake()
@@ -29,6 +30,7 @@ public class CameraController : MonoBehaviour
         myCamera = Camera.main.gameObject;
         
         Cursor.lockState = CursorLockMode.Locked;
+        lockDot.enabled = false;
     }
 
     private void FixedUpdate()  // 放 Update / LateUpdate 都会发生抖动
@@ -71,6 +73,7 @@ public class CameraController : MonoBehaviour
         if (cols.Length == 0)
         {
             lockTarget = null;
+            lockDot.enabled = false;
         }
         else
         {
@@ -79,9 +82,11 @@ public class CameraController : MonoBehaviour
                 if (lockTarget == col.gameObject)
                 {
                     lockTarget = null;
+                    lockDot.enabled = false;
                     break;
                 }
                 lockTarget = col.gameObject;
+                lockDot.enabled = true;
                 break;
             }
         }
