@@ -7,6 +7,7 @@ public class CameraController : MonoBehaviour
     public float verticalSpeed = 100.0f;
     public float cameraDamp = 1f;
     public Image lockDot;
+    public bool lockState;
  
     private IUserInput pi;
     
@@ -31,6 +32,7 @@ public class CameraController : MonoBehaviour
         
         Cursor.lockState = CursorLockMode.Locked;
         lockDot.enabled = false;
+        lockState = false;
     }
 
     private void FixedUpdate()  // 放 Update / LateUpdate 都会发生抖动
@@ -74,6 +76,7 @@ public class CameraController : MonoBehaviour
         {
             lockTarget = null;
             lockDot.enabled = false;
+            lockState = false;
         }
         else
         {
@@ -83,10 +86,12 @@ public class CameraController : MonoBehaviour
                 {
                     lockTarget = null;
                     lockDot.enabled = false;
+                    lockState = false;
                     break;
                 }
                 lockTarget = col.gameObject;
                 lockDot.enabled = true;
+                lockState = true;
                 break;
             }
         }

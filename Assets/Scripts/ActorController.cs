@@ -70,14 +70,23 @@ public class ActorController : MonoBehaviour
         // 跳跃
         if (pi.attack && CheckState("ground") && canAttack)
             anim.SetTrigger("attack");
+
+        if (!camCon.lockState)
+        {
+            // 角色旋转
+            if (pi.Dmag > 0.1f)
+                model.transform.forward = Vector3.Slerp(model.transform.forward, pi.Dvec, 0.3f);
         
-        // 角色旋转
-        if (pi.Dmag > 0.1f)
-            model.transform.forward = Vector3.Slerp(model.transform.forward, pi.Dvec, 0.3f);
-        
-        // 角色移动
-        if (!lockPlanar)
-            planarVec = model.transform.forward * (pi.Dmag * walkSpeed * (pi.run ? runMultiplier : 1.0f)); 
+            // 角色移动
+            if (!lockPlanar)
+                planarVec = model.transform.forward * (pi.Dmag * walkSpeed * (pi.run ? runMultiplier : 1.0f));   
+        }
+        else
+        {
+            model.transform.forward = transform.forward;
+            if (!lockPlanar)
+                planarVec = pi.Dvec * (pi.Dmag * walkSpeed * (pi.run ? runMultiplier : 1.0f));
+        }
     }
 
     private void FixedUpdate()
