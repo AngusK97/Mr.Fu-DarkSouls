@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,7 +19,7 @@ public class CameraController : MonoBehaviour
 
     private GameObject myCamera;
     private Vector3 cameraDampVelocity;
-    private GameObject lockTarget;
+    private LockTarget lockTarget;
     
     void Awake()
     {
@@ -30,14 +31,24 @@ public class CameraController : MonoBehaviour
         tempEulerX = 20f;
         myCamera = Camera.main.gameObject;
         
+        lockTarget = new LockTarget();
         Cursor.lockState = CursorLockMode.Locked;
         lockDot.enabled = false;
         lockState = false;
     }
 
+    private void Update()
+    {
+        if (lockTarget.obj != null)
+        {
+            lockDot.rectTransform.position = Camera.main.WorldToScreenPoint(
+                lockTarget.obj.transform.position + new Vector3(0, lockTarget.halfHeight, 0));
+        }
+    }
+
     private void FixedUpdate()  // 放 Update / LateUpdate 都会发生抖动
     {
-        if (lockTarget == null)
+        if (lockTarget.obj == null)
         {
             // camera horizontal move
             playerHandle.transform.Rotate(Vector3.up, pi.Jright * horizontalSpeed * Time.deltaTime);
@@ -52,10 +63,10 @@ public class CameraController : MonoBehaviour
         }
         else
         {
-            Vector3 tempForward = lockTarget.transform.position - model.transform.position;
+            Vector3 tempForward = lockTarget.obj.transform.position - model.transform.position;
             tempForward.y = 0;
             playerHandle.transform.forward = tempForward;
-            transform.LookAt(lockTarget.transform);
+            transform.LookAt(lockTarget.obj.transform);
         }
 
         // camera.transform.position = Vector3.Lerp(camera.transform.position, transform.position, 0.02f);  // Vector3.Lerp
@@ -74,7 +85,7 @@ public class CameraController : MonoBehaviour
         Collider[] cols = Physics.OverlapBox(boxCenter, new Vector3(0.5f, 0.5f, 5f), model.transform.rotation, LayerMask.GetMask("Enemy"));
         if (cols.Length == 0)
         {
-            lockTarget = null;
+            lockTarget.Unlock();
             lockDot.enabled = false;
             lockState = false;
         }
@@ -82,18 +93,36 @@ public class CameraController : MonoBehaviour
         {
             foreach (var col in cols)
             {
-                if (lockTarget == col.gameObject)
+                if (lockTarget.obj == col.gameObject)
                 {
-                    lockTarget = null;
+                    lockTarget.Unlock();
                     lockDot.enabled = false;
                     lockState = false;
                     break;
                 }
-                lockTarget = col.gameObject;
+                lockTarget.Lock(col.gameObject, col.bounds.extents.y);
                 lockDot.enabled = true;
                 lockState = true;
                 break;
             }
+        }
+    }
+
+    private class LockTarget
+    {
+        public GameObject obj;
+        public float halfHeight;
+
+        public void Lock(GameObject obj, float halfHeight)
+        {
+            this.obj = obj;
+            this.halfHeight = halfHeight;
+        }
+
+        public void Unlock()
+        {
+            obj = null;
+            halfHeight = 0f;
         }
     }
 }
