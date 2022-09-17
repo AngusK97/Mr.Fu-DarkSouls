@@ -1,5 +1,3 @@
- using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class JoystickInput : IUserInput
@@ -34,33 +32,32 @@ public class JoystickInput : IUserInput
         buttonLB.Tick(Input.GetButton(btnLB));
         buttonJstick.Tick(Input.GetButton(btnJstick));
         
+        // camera move amount
         Jup = Input.GetAxis(axisJup);
         Jright = Input.GetAxis(axisJright);
         
+        // smoothed player move amount
         targetDup = Input.GetAxis(axisY);
         targetDright = Input.GetAxis(axisX);
-
         if (inputEnable == false)
         {
             targetDup = 0f;
             targetDright = 0f;
         }
-
         Dup = Mathf.SmoothDamp(Dup, targetDup, ref velocityDup, 0.1f);
         Dright = Mathf.SmoothDamp(Dright, targetDright, ref velocityDright, 0.1f);
         
+        // normalize player move amount
         Vector2 tempDAxis = SquareToCircle(new Vector2(Dright, Dup));
         float Dright2 = tempDAxis.x;
         float Dup2 = tempDAxis.y;
-        
         Dmag = Mathf.Sqrt((Dup2 * Dup2) + (Dright2 * Dright2));
         Dvec = Dright2 * transform.right + Dup2 * transform.forward;
         
-        // pressing signal
+        // player behaviors
         run = (buttonA.IsPressing && !buttonA.IsDelaying) || buttonA.IsExtending;
         jump = buttonA.OnPressed && buttonA.IsExtending;
         roll = buttonA.OnReleased && buttonA.IsDelaying;
-        
         attack = buttonC.OnPressed;
         defense = buttonB.IsPressing;
         lockOn = buttonJstick.OnPressed;

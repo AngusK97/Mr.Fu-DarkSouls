@@ -56,6 +56,8 @@ public class CameraController : MonoBehaviour
     {
         if (targetObj == null)
         {
+            Vector3 tempModelEuler = model.transform.eulerAngles;
+            
             // camera horizontal move
             playerHandle.transform.Rotate(Vector3.up, pi.Jright * horizontalSpeed * Time.deltaTime);
         
@@ -64,8 +66,7 @@ public class CameraController : MonoBehaviour
             tempEulerX = Mathf.Clamp(tempEulerX, -40, 30);
             cameraHandle.transform.localEulerAngles = new Vector3(tempEulerX, 0f, 0f);
             
-            // Vector3 tempModelEuler = model.transform.eulerAngles;
-            // model.transform.eulerAngles = tempModelEuler;
+            model.transform.eulerAngles = tempModelEuler;
         }
         else
         {

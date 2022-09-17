@@ -1,14 +1,13 @@
-using UnityEditorInternal;
 using UnityEngine;
 
 public class ActorController : MonoBehaviour
 {
+    public IUserInput pi;
     public GameObject model;
     public CameraController camCon;
-    public IUserInput pi;
     public float walkSpeed = 2.4f;
     public float runMultiplier = 2.0f;
-    public float jumpVelocity = 7f;
+    public float jumpVelocityY = 7f;
     public float rollVelocity = 1f;
 
     [Space(10)]
@@ -18,18 +17,20 @@ public class ActorController : MonoBehaviour
 
     private Animator anim;
     private Rigidbody rigid;
-    private Vector3 planarVec;
-    private Vector3 thrustVec;
-    private bool canAttack;
-    private bool lockPlanar = false;
-    private bool trackDirection = false;
     private CapsuleCollider col;
-    private float lerpTarget;
-    private Vector3 deltaPos;
+    
+    private Vector3 planarVelocity;  // 角色基础移动速度
+    private Vector3 thrustVelocity;  // 附加速度
+    
+    private bool canAttack;  // 是否允许攻击
+    private bool lockPlanar;  // 是否锁定地面移动量 planarVelocity
+    private bool trackDirection;  // 记录是否在翻滚或跳跃
+    
+    private float layerLerpTarget;  // 动画层权重的目标值 
+    private Vector3 deltaPos;  // Root Motion 的位置偏移量
 
     private void Awake()
     {
-        // pi = GetComponent<PlayerInput>();
         IUserInput[] inputs = GetComponents<IUserInput>();
         foreach (var input in inputs)
         {
@@ -39,13 +40,14 @@ public class ActorController : MonoBehaviour
                 break;
             }
         }
+        col = GetComponent<CapsuleCollider>();
         anim = model.GetComponent<Animator>();
         rigid = GetComponent<Rigidbody>();
-        col = GetComponent<CapsuleCollider>();
     }
 
     private void Update()
     {
+        // 锁定敌人
         if (pi.lockOn)
             camCon.LockUnlock();
 
@@ -63,6 +65,7 @@ public class ActorController : MonoBehaviour
             anim.SetFloat("right", localDVec.x * (pi.run ? 2.0f : 1.0f));
         }
         
+        // 举盾
         anim.SetBool("defense", pi.defense);
         
         // 下落后翻滚
@@ -79,38 +82,43 @@ public class ActorController : MonoBehaviour
             canAttack = false;
         }
 
-        // 跳跃
+        // 攻击
         if (pi.attack && CheckState("ground") && canAttack)
             anim.SetTrigger("attack");
 
+        // 锁定模式下角色的朝向与基础速度
         if (!camCon.lockState)
         {
-            // 角色旋转
+            // 角色旋转：模型朝向输入方向
             if (pi.Dmag > 0.1f)
                 model.transform.forward = Vector3.Slerp(model.transform.forward, pi.Dvec, 0.3f);
         
-            // 角色移动
+            // 角色地面基础速度
             if (!lockPlanar)
-                planarVec = model.transform.forward * (pi.Dmag * walkSpeed * (pi.run ? runMultiplier : 1.0f));   
+                planarVelocity = model.transform.forward * (pi.Dmag * walkSpeed * (pi.run ? runMultiplier : 1.0f));
         }
         else
         {
+            // 角色旋转
             if (!trackDirection)
                 model.transform.forward = transform.forward;    
             else
-                model.transform.forward = planarVec.normalized;
+                model.transform.forward = planarVelocity.normalized;
             
+            // 角色地面基础速度
             if (!lockPlanar)
-                planarVec = pi.Dvec * (pi.Dmag * walkSpeed * (pi.run ? runMultiplier : 1.0f));
+                planarVelocity = pi.Dvec * (pi.Dmag * walkSpeed * (pi.run ? runMultiplier : 1.0f));
         }
     }
 
     private void FixedUpdate()
     {
-        rigid.position += deltaPos;
-        // rigid.position += movingVec * Time.fixedDeltaTime;  // 修改 rigid.position 移动角色
-        rigid.velocity = new Vector3(planarVec.x, rigid.velocity.y, planarVec.z) + thrustVec; // 修改 rigid.velocity 移动角色
-        thrustVec = Vector3.zero;
+        // 角色移动
+        rigid.position += deltaPos;  // 考虑 Root motion 移动量
+        // rigid.position += movingVec * Time.fixedDeltaTime;  // 移动 Rigidbody 方式一：修改 position
+        rigid.velocity = new Vector3(planarVelocity.x, rigid.velocity.y, planarVelocity.z) + thrustVelocity; // 移动 Rigidbody 方式二：修改 velocity
+        
+        thrustVelocity = Vector3.zero;
         deltaPos = Vector3.zero;
     }
 
@@ -127,7 +135,7 @@ public class ActorController : MonoBehaviour
     ///
     public void OnJumpEnter()
     {
-        thrustVec = new Vector3(0f, jumpVelocity, 0f);
+        thrustVelocity = new Vector3(0f, jumpVelocityY, 0f);
         pi.inputEnable = false;
         lockPlanar = true;
         trackDirection = true;
@@ -165,7 +173,7 @@ public class ActorController : MonoBehaviour
 
     public void OnRollEnter()
     {
-        thrustVec = new Vector3(0f, rollVelocity, 0f);
+        thrustVelocity = new Vector3(0f, rollVelocity, 0f);
         pi.inputEnable = false;
         lockPlanar = true;
         trackDirection = true;
@@ -179,33 +187,33 @@ public class ActorController : MonoBehaviour
 
     public void OnJabUpdate()
     {
-        thrustVec = model.transform.forward * anim.GetFloat("jabVelocity");
+        thrustVelocity = model.transform.forward * anim.GetFloat("jabVelocity");
     }
 
     public void OnAttackIdleEnter()
     {
         pi.inputEnable = true;
-        lerpTarget = 0f;
+        layerLerpTarget = 0f;
     }
 
     public void OnAttackIdleUpdate()
     {
         float currentWeight = anim.GetLayerWeight(anim.GetLayerIndex("attack"));
-        currentWeight = Mathf.Lerp(currentWeight, lerpTarget, 0.1f);
+        currentWeight = Mathf.Lerp(currentWeight, layerLerpTarget, 0.1f);
         anim.SetLayerWeight(anim.GetLayerIndex("attack"), currentWeight);
     }
 
     public void OnAttack1hAEnter()
     {
         pi.inputEnable = false;
-        lerpTarget = 1.0f;
+        layerLerpTarget = 1.0f;
     }
 
     public void OnAttack1hAUpdate()
     {
-        thrustVec = model.transform.forward * anim.GetFloat("attack1hAVelocity");
+        thrustVelocity = model.transform.forward * anim.GetFloat("attack1hAVelocity");
         float currentWeight = anim.GetLayerWeight(anim.GetLayerIndex("attack"));
-        currentWeight = Mathf.Lerp(currentWeight, lerpTarget, 0.1f);
+        currentWeight = Mathf.Lerp(currentWeight, layerLerpTarget, 0.1f);
         anim.SetLayerWeight(anim.GetLayerIndex("attack"), currentWeight);
     }
 

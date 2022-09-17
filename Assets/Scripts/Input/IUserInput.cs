@@ -1,33 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class IUserInput : MonoBehaviour
 {
     [Header("===== Output signals =====")]
-    public float Dup;
-    public float Dright;
-    public float Dmag;
-    public Vector3 Dvec;
+    // player ground move
+    public float Dup;  // [-1, 1] forward backward
+    public float Dright;  // [-1, 1] leftward rightward
+    public float Dmag;  // normalized move amount
+    public Vector3 Dvec;  // normalized move vector
     
+    // camera move
     public float Jup;
     public float Jright;
 
-    // 1. pressing signal
+    // player behaviors
     public bool run;
-    public bool defense;
-    // 2. trigger once signal
     public bool jump;
-    protected bool lastJump;
-    public bool attack;
-    protected bool lastAttack;
     public bool roll;
+    public bool attack;
     public bool lockOn;
-    // 3. double trigger
+    public bool defense;
 
     [Header("===== Others =====")]
     public bool inputEnable = true;
     
+    // for smooth
     protected float targetDup;
     protected float targetDright;
     protected float velocityDup;

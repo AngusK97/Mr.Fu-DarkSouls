@@ -2,33 +2,33 @@ using UnityEngine;
 
 public class MyTimer
 {
-    public enum STATE
+    public enum State
     {
         IDLE,
         RUN,
         FINISHED
     }
 
-    public STATE state;
+    public State state;
     public float duration;
     
     private float elapsedTime;
 
     public void Tick()
     {
-        if (state == STATE.IDLE)
+        if (state == State.IDLE)
         {
             
         }
-        else if (state == STATE.RUN)
+        else if (state == State.RUN)
         {
             elapsedTime += Time.deltaTime;
             if (elapsedTime >= duration)
             {
-                state = STATE.FINISHED;
+                state = State.FINISHED;
             }
         }
-        else if (state == STATE.FINISHED)
+        else if (state == State.FINISHED)
         {
             
         }
@@ -41,6 +41,6 @@ public class MyTimer
     public void Go()
     {
         elapsedTime = 0f;
-        state = STATE.RUN;
+        state = State.RUN;
     }
 }

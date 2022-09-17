@@ -1,18 +1,16 @@
-using UnityEngine;
-
 public class MyButton
 {
-    public bool IsPressing = false;
-    public bool OnPressed = false;
-    public bool OnReleased = false;
-    public bool IsExtending = false;
-    public bool IsDelaying = false;
+    private readonly float extendingDuration = 0.15f;
+    private readonly float delayingDuration = 0.2f;
+    
+    public bool IsPressing;
+    public bool OnPressed;
+    public bool OnReleased;
+    public bool IsExtending;
+    public bool IsDelaying;
 
-    public float extendingDuration = 0.15f;
-    public float delayingDuration = 0.2f;
-
-    private bool curState = false;
-    private bool lastState = false;
+    private bool curState;
+    private bool lastState;
     
     private MyTimer extTimer = new MyTimer();
     private MyTimer delayTimer = new MyTimer();
@@ -23,8 +21,8 @@ public class MyButton
         delayTimer.Tick();
         
         curState = input;
+        
         IsPressing = curState;
-
         OnPressed = false;
         OnReleased = false;
         IsExtending = false;
@@ -46,10 +44,10 @@ public class MyButton
         
         lastState = curState;
         
-        if (extTimer.state == MyTimer.STATE.RUN)
+        if (extTimer.state == MyTimer.State.RUN)
             IsExtending = true;
 
-        if (delayTimer.state == MyTimer.STATE.RUN)
+        if (delayTimer.state == MyTimer.State.RUN)
             IsDelaying = true;
     }
 
